@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const modalContributor = document.getElementById('modalContributor');
     const modalClose = document.getElementById('modalClose');
     const modalOverlay = document.querySelector('.modal-overlay');
-    const promptCount = document.getElementById('promptCount');
-    const totalCount = document.getElementById('totalCount');
 
     // State
     let promptsData = [];
@@ -24,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             await loadPrompts();
             setupEventListeners();
             renderPrompts();
-            updateCounts();
         } catch (error) {
             console.error('Failed to initialize app:', error);
             showError('Failed to load prompts. Please try again later.');
@@ -49,7 +46,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Setup event listeners
     function setupEventListeners() {
         // Search functionality
-        searchInput.addEventListener('input', debounce(handleSearch, 300));
+        if (searchInput) {
+            searchInput.addEventListener('input', debounce(handleSearch, 300));
+        }
 
         // Platform filter buttons
         document.querySelectorAll('.platform-btn').forEach(btn => {
@@ -62,19 +61,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         // Modal event listeners
-        modalClose.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', closeModal);
+        if (modalClose) {
+            modalClose.addEventListener('click', closeModal);
+        }
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', closeModal);
+        }
         
         // Close modal on Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
                 closeModal();
             }
-        });
-
-        // Contribute button
-        document.querySelector('.contribute-btn')?.addEventListener('click', () => {
-            window.open('https://github.com/f/awesome-chatgpt-prompts', '_blank');
         });
     }
 
@@ -94,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Add active class to clicked button
         e.target.classList.add('active');
         
-        currentPlatform = e.target.dataset.platform;
+        currentPlatform = e.target.dataset.platform || 'all';
         applyFilters();
     }
 
@@ -108,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Add active class to clicked button
         e.target.classList.add('active');
         
-        currentCategory = e.target.dataset.category;
+        currentCategory = e.target.dataset.category || 'all';
         applyFilters();
     }
 
@@ -117,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         filteredPrompts = promptsData.filter(prompt => {
             // Platform filter
             const platformMatch = currentPlatform === 'all' || 
-                prompt.platforms.includes(currentPlatform);
+                (prompt.platforms && prompt.platforms.includes(currentPlatform));
 
             // Category filter
             const categoryMatch = currentCategory === 'all' || 
@@ -133,34 +131,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         renderPrompts();
-        updateCounts();
     }
 
     // Render prompts
     function renderPrompts() {
-        if (filteredPrompts.length === 0) {
-            showEmptyState();
-            return;
-        }
+        if (!promptContainer) return;
 
-        const promptsHTML = filteredPrompts.map(prompt => `
-            <div class="prompt-card" data-id="${prompt.id}">
-                <h3>${escapeHtml(prompt.title)}</h3>
-                <p>${escapeHtml(prompt.description)}</p>
-                <div class="actions">
-                    <div class="action-icon" title="Copy"></div>
-                    <div class="action-icon" title="Share"></div>
-                    <div class="action-icon" title="Bookmark"></div>
-                </div>
-                <p class="contributor">@${escapeHtml(prompt.contributor)}</p>
+        // Start with the "Add Your Prompt" card
+        let promptsHTML = `
+            <div class="add-prompt-card">
+                <div class="add-prompt-icon">+</div>
+                <h3>Add Your Prompt</h3>
+                <p>Share your creative prompts with the community! Submit a pull request to add your prompts to the collection.</p>
+                <button class="contribute-btn">Contribute Now</button>
             </div>
-        `).join('');
+        `;
+
+        if (filteredPrompts.length === 0) {
+            promptsHTML += `
+                <div class="empty-state">
+                    <h3>No prompts found</h3>
+                    <p>Try adjusting your search or filter criteria.</p>
+                </div>
+            `;
+        } else {
+            promptsHTML += filteredPrompts.map(prompt => `
+                <div class="prompt-card" data-id="${prompt.id}">
+                    <h3>${escapeHtml(prompt.title)}</h3>
+                    <p>${escapeHtml(prompt.description)}</p>
+                    <div class="prompt-card-footer">
+                        <div class="prompt-actions">
+                            <div class="action-icon" title="Copy">📋</div>
+                            <div class="action-icon" title="Share">📤</div>
+                            <div class="action-icon" title="Bookmark">🔖</div>
+                        </div>
+                        <p class="contributor">@${escapeHtml(prompt.contributor)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
 
         promptContainer.innerHTML = promptsHTML;
 
         // Add click event listeners to prompt cards
         document.querySelectorAll('.prompt-card').forEach(card => {
             card.addEventListener('click', handlePromptClick);
+        });
+
+        // Add click event listener to contribute button
+        document.querySelector('.contribute-btn')?.addEventListener('click', () => {
+            window.open('https://github.com/f/awesome-chatgpt-prompts', '_blank');
         });
     }
 
@@ -176,9 +196,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Open modal with prompt details
     function openModal(prompt) {
-        modalTitle.textContent = prompt.title;
-        modalPromptText.textContent = prompt.prompt;
-        modalContributor.textContent = `@${prompt.contributor}`;
+        if (!modal) return;
+        
+        if (modalTitle) modalTitle.textContent = prompt.title;
+        if (modalPromptText) modalPromptText.textContent = prompt.prompt;
+        if (modalContributor) modalContributor.textContent = `@${prompt.contributor}`;
         
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -186,50 +208,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Close modal
     function closeModal() {
+        if (!modal) return;
+        
         modal.classList.add('hidden');
         document.body.style.overflow = 'auto';
     }
 
-    // Update counts
-    function updateCounts() {
-        const count = filteredPrompts.length;
-        totalCount.textContent = count;
-        
-        if (currentSearchQuery) {
-            promptCount.textContent = `Search Results`;
-        } else if (currentCategory !== 'all') {
-            const categoryName = document.querySelector(`[data-category="${currentCategory}"]`)
-                ?.querySelector('.category-name')?.textContent || currentCategory;
-            promptCount.textContent = categoryName;
-        } else {
-            promptCount.textContent = 'All Prompts';
-        }
-
-        // Update category counts
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            const category = btn.dataset.category;
-            const countElement = btn.querySelector('.category-count');
-            
-            if (countElement && category !== 'all') {
-                const categoryCount = promptsData.filter(p => p.category === category).length;
-                countElement.textContent = categoryCount;
-            }
-        });
-    }
-
-    // Show empty state
-    function showEmptyState() {
-        promptContainer.innerHTML = `
-            <div class="empty-state">
-                <h3>No prompts found</h3>
-                <p>Try adjusting your search or filter criteria.</p>
-            </div>
-        `;
-    }
-
     // Show error message
     function showError(message) {
+        if (!promptContainer) return;
+        
         promptContainer.innerHTML = `
+            <div class="add-prompt-card">
+                <div class="add-prompt-icon">+</div>
+                <h3>Add Your Prompt</h3>
+                <p>Share your creative prompts with the community! Submit a pull request to add your prompts to the collection.</p>
+                <button class="contribute-btn">Contribute Now</button>
+            </div>
             <div class="empty-state">
                 <h3>Error</h3>
                 <p>${escapeHtml(message)}</p>
@@ -251,6 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function escapeHtml(text) {
+        if (!text) return '';
         const map = {
             '&': '&amp;',
             '<': '<',
