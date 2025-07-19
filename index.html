@@ -11,10 +11,23 @@
     <!-- Header -->
     <header class="site-header">
         <div class="header-content">
-            <h1 class="site-title">prompts.chat</h1>
-            <p class="site-subtitle">World's First & Most Famous Prompts Directory</p>
-            <div class="header-badge">
-                <span class="badge">New: Try Vibe Coding Model!</span>
+            <div class="header-left">
+                <h1 class="site-title">prompts.chat</h1>
+                <p class="site-subtitle">World's First & Most Famous Prompts Directory</p>
+                <div class="header-badge">
+                    <span class="badge">New: Try Vibe Coding Model!</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="vibe-coded">
+                    <span>🟢 vibecoded with cursor</span>
+                </div>
+                <div class="star-count">
+                    <span>⭐ 130,829</span>
+                </div>
+                <div class="theme-toggle">
+                    <span>🌙</span>
+                </div>
             </div>
         </div>
     </header>
@@ -25,7 +38,6 @@
             <div class="platform-filters">
                 <p class="filter-label">Choose your AI platform</p>
                 <div class="platform-buttons">
-                    <button class="platform-btn active" data-platform="all">All Prompts</button>
                     <button class="platform-btn" data-platform="github-copilot">GitHub Copilot</button>
                     <button class="platform-btn" data-platform="chatgpt">ChatGPT</button>
                     <button class="platform-btn" data-platform="grok">Grok</button>
@@ -36,16 +48,6 @@
                     <button class="platform-btn" data-platform="meta">Meta</button>
                 </div>
             </div>
-            
-            <div class="search-section">
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search prompts..." />
-                </div>
-                <div class="prompt-count">
-                    <span id="promptCount">All Prompts</span>
-                    <span id="totalCount" class="count-badge">219</span>
-                </div>
-            </div>
         </div>
     </nav>
 
@@ -53,6 +55,9 @@
     <div class="main-layout">
         <!-- Categories Sidebar -->
         <aside class="categories-sidebar">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search prompts..." />
+            </div>
             <div class="categories-list">
                 <button class="category-btn active" data-category="all">
                     <span class="category-name">All Prompts</span>
