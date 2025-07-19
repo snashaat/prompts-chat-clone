@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompts Chat - World's First & Most Famous Prompts Directory</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-content">
+            <h1 class="site-title">prompts.chat</h1>
+            <p class="site-subtitle">World's First & Most Famous Prompts Directory</p>
+            <div class="header-badge">
+                <span class="badge">New: Try Vibe Coding Model!</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="site-nav">
+        <div class="nav-content">
+            <div class="platform-filters">
+                <p class="filter-label">Choose your AI platform</p>
+                <div class="platform-buttons">
+                    <button class="platform-btn active" data-platform="all">All Prompts</button>
+                    <button class="platform-btn" data-platform="github-copilot">GitHub Copilot</button>
+                    <button class="platform-btn" data-platform="chatgpt">ChatGPT</button>
+                    <button class="platform-btn" data-platform="grok">Grok</button>
+                    <button class="platform-btn" data-platform="claude">Claude</button>
+                    <button class="platform-btn" data-platform="perplexity">Perplexity</button>
+                    <button class="platform-btn" data-platform="mistral">Mistral</button>
+                    <button class="platform-btn" data-platform="gemini">Gemini</button>
+                    <button class="platform-btn" data-platform="meta">Meta</button>
+                </div>
+            </div>
+            
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search prompts..." />
+                </div>
+                <div class="prompt-count">
+                    <span id="promptCount">All Prompts</span>
+                    <span id="totalCount" class="count-badge">219</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Categories Sidebar and Main Content -->
+    <div class="main-layout">
+        <!-- Categories Sidebar -->
+        <aside class="categories-sidebar">
+            <div class="categories-list">
+                <button class="category-btn active" data-category="all">
+                    <span class="category-name">All Prompts</span>
+                    <span class="category-count">219</span>
+                </button>
+                <button class="category-btn" data-category="academician">
+                    <span class="category-name">Academician</span>
+                </button>
+                <button class="category-btn" data-category="accessibility-auditor">
+                    <span class="category-name">Accessibility Auditor</span>
+                </button>
+                <button class="category-btn" data-category="accountant">
+                    <span class="category-name">Accountant</span>
+                </button>
+                <button class="category-btn" data-category="acoustic-guitar-composer">
+                    <span class="category-name">Acoustic Guitar Composer</span>
+                </button>
+                <button class="category-btn" data-category="advertiser">
+                    <span class="category-name">Advertiser</span>
+                </button>
+                <button class="category-btn" data-category="developer">
+                    <span class="category-name">Developer</span>
+                </button>
+                <button class="category-btn" data-category="writer">
+                    <span class="category-name">Writer</span>
+                </button>
+                <button class="category-btn" data-category="designer">
+                    <span class="category-name">Designer</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Language and Tone Settings -->
+            <div class="settings-bar">
+                <div class="setting-group">
+                    <span class="setting-label">Reply in</span>
+                    <select class="setting-select" id="languageSelect">
+                        <option value="english">English</option>
+                        <option value="spanish">Spanish</option>
+                        <option value="french">French</option>
+                        <option value="german">German</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <span class="setting-label">using</span>
+                    <select class="setting-select" id="toneSelect">
+                        <option value="professional">professional</option>
+                        <option value="casual">casual</option>
+                        <option value="friendly">friendly</option>
+                        <option value="formal">formal</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <span class="setting-label">tone, for</span>
+                    <select class="setting-select" id="audienceSelect">
+                        <option value="everyone">everyone</option>
+                        <option value="beginners">beginners</option>
+                        <option value="experts">experts</option>
+                        <option value="students">students</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Prompt Cards Grid -->
+            <div id="promptContainer" class="prompt-grid">
+                <!-- Prompt cards will be injected here dynamically -->
+            </div>
+
+            <!-- Add Your Prompt Section -->
+            <div class="add-prompt-section">
+                <div class="add-prompt-card">
+                    <div class="add-prompt-icon">+</div>
+                    <h3>Add Your Prompt</h3>
+                    <p>Share your creative prompts with the community! Submit a pull request to add your prompts to the collection.</p>
+                    <button class="contribute-btn">Contribute Now</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p>A curated collection of effective prompts for ChatGPT and other AI assistants, curated by <a href="#">Kadir Akın</a>. While designed for ChatGPT, these prompts can be adapted for Claude, Gemini, Llama, and other language models.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contributing</h4>
+                <p>If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome. Please read the <a href="#">contribution guidelines</a> first.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Featured on Forbes</a></li>
+                    <li><a href="#">GitHub Repository</a></li>
+                    <li><a href="#">Hugging Face Dataset</a></li>
+                    <li><a href="#">View Unmerged Prompts</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>e-Books by @f</h4>
+                <ul class="footer-links">
+                    <li><a href="#">The Art of ChatGPT Prompting</a></li>
+                    <li><a href="#">How to Make Money with ChatGPT</a></li>
+                    <li><a href="#">The Art of Midjourney AI</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Prompt Detail Modal -->
+    <div id="promptModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button id="modalClose" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalPromptText" class="prompt-text"></div>
+                <div class="modal-footer">
+                    <p class="contributor">Contributed by <span id="modalContributor"></span></p>
+                    <div class="modal-actions">
+                        <button class="action-btn embed-btn">Embed</button>
+                        <button class="action-btn chat-btn">Chat with GitHub Copilot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
